@@ -1,0 +1,23 @@
+{
+    "name": "meetup/shipping",
+    "description": "Custom Shipping module",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.magento.com/"
+        }
+    ],
+    "require": {
+        "magento/framework": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Meetup\\Shipping\\": ""
+        },
+        "files": [
+            "registration.php"
+        ]
+    }
+}
