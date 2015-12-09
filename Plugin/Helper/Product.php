@@ -24,7 +24,7 @@ class Product
      */
     public function afterInitProduct($subject, ProductInterface $product)
     {
-        if ($this->shippingModel->getConfigData('attribute_set') != $product->getAttributeSetId()) {
+        if ($this->shippingModel->getConfigData('attribute_set') == $product->getAttributeSetId()) {
             $product->setPrice($product->getPrice() * 0.9);
         }
 
