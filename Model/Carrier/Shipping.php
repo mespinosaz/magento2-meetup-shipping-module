@@ -2,6 +2,7 @@
 
 namespace Meetup\Shipping\Model\Carrier;
 
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\Quote\Model\Quote\Item;
 
@@ -61,16 +62,23 @@ class Shipping extends \Magento\Shipping\Model\Carrier\AbstractCarrier implement
 
         $items = $request->getAllItems();
 
-        $allGuitars = array_reduce($items, function($carry, Item $item) {
-            return $carry && $item->getProduct()->getAttributeSetId() == $this->getConfigData('attribute_set');
+        $allItemsInAttributeSet = array_reduce($items, function($carry, Item $item) {
+            return $carry && $this->isAvailableForProduct($item->getProduct());
         }, true);
 
-        if (!$allGuitars && $this->getConfigData('showmethod')) {
+        if (!$allItemsInAttributeSet && $this->getConfigData('showmethod')) {
             return $this->buildErrorResult();
         }
         return $this->buildResult($request);
 
 
+    }
+
+    public function isAvailableForProduct(ProductInterface $product)
+    {
+        $attributeSets = array_map("intval", explode(",", $this->getConfigData('attribute_set')));
+
+        return in_array($product->getAttributeSetId(), $attributeSets) && $this->getConfigFlag('active');
     }
 
     /**

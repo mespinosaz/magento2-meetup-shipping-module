@@ -39,7 +39,7 @@ class Shipping extends Template
         /** @var \Magento\Catalog\Api\Data\ProductInterface $product */
         $product = $this->registry->registry('current_product');
 
-        if ($product->getAttributeSetId() != $this->shippingModel->getConfigData('attribute_set')) {
+        if (!$this->shippingModel->isAvailableForProduct($product)) {
             return '';
         }
 

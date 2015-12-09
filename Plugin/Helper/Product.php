@@ -19,15 +19,15 @@ class Product
 
     /**
      * @param $subject
-     * @param ProductInterface $product
+     * @param ProductInterface $result
      * @return ProductInterface
      */
-    public function afterInitProduct($subject, ProductInterface $product)
+    public function afterInitProduct($subject, ProductInterface $result)
     {
-        if ($this->shippingModel->getConfigData('attribute_set') == $product->getAttributeSetId()) {
-            $product->setPrice($product->getPrice() * 0.9);
+        if ($this->shippingModel->isAvailableForProduct($result)) {
+            $result->setPrice($result->getPrice() * 0.9);
         }
 
-        return $product;
+        return $result;
     }
 }
